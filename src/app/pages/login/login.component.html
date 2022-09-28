@@ -1,0 +1,18 @@
+<div class="container text-center">
+  <main class="form-signin w-100 m-auto shadow mt-5 p-4 border-r15" style="max-width: 330px;">
+    <form>
+      <img class="mb-4" src="../../../assets/logo-angular.svg" alt="" width="72" height="57">
+      <h1 class="h3 mb-3 fw-normal fw-6">Login</h1>
+
+      <div class="form-floating">
+        <input type="email" class="form-control" id="floatingInput" name="user" [(ngModel)]="user" required>
+        <label for="floatingInput">Usuario</label>
+      </div>
+      <div class="form-floating mt-2">
+        <input type="password" class="form-control" id="floatingPassword" name="pass" [(ngModel)]="pass" required>
+        <label for="floatingPassword">Contraseña</label>
+      </div>
+      <button class="w-100 btn btn-lg btn-primary mt-4" type="submit" (click)="iniciarSession()">Iniciar</button>
+    </form>
+  </main>
+</div>

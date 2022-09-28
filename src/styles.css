@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  background: #fff;
+}
+
+.border-r15 {
+  border-radius: 15px;
+
+}
+
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.fw-6{
+  font-weight: 600 !important;
+}
