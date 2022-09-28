@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 import { GestionService } from '../../services/gestion.service';
 
@@ -36,34 +36,29 @@ export class GestionComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    Swal.fire({ title: 'Cargando...', allowOutsideClick: false });
+    Swal.showLoading();
+    this.actualizarListadoPersonas();
 
     this.activatedRoute.params
       .pipe(
-        switchMap(() => this.GestionService.listarTodos()),
-        tap(console.log)
+        switchMap(() => this.GestionService.listarTipoId())
       )
-      .subscribe(listadoPersonas => this.listadoPersonas = listadoPersonas);
-
-    this.activatedRoute.params
-      .pipe(
-        switchMap(() => this.GestionService.listarTipoId()),
-        tap(console.log)
-      )
-      .subscribe(listadoTipoId => this.listadoTipoId = listadoTipoId);
+      .subscribe(listadoTipoId => { this.listadoTipoId = listadoTipoId; Swal.close(); });
 
   }
 
-  // limpiarForm(): void {
-
-  // }
-
   actualizarListadoPersonas() {
+
     this.activatedRoute.params
       .pipe(
-        switchMap(() => this.GestionService.listarTodos()),
-        tap(console.log)
+        switchMap(() => this.GestionService.listarTodos())
       )
-      .subscribe(listadoPersonas => this.listadoPersonas = listadoPersonas);
+      .subscribe(listadoPersonas => {
+        this.listadoPersonas = listadoPersonas;
+
+      }
+      );
   }
 
   limpiarForm() {
@@ -119,7 +114,6 @@ export class GestionComponent implements OnInit {
     this.formData = persona;
     this.tituloRegistrar = false;
     this.mostrarTabla = false;
-
   }
 
   actualizarPersona(): void {
@@ -154,17 +148,31 @@ export class GestionComponent implements OnInit {
 
 
   eliminarPersona(persona: Persona): void {
-    console.log(persona)
+    Swal.fire({
+      title: 'Continuar?',
+      text: "Esta seguro de continuar!",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Continuar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({ title: 'Cargando...', allowOutsideClick: false });
+        Swal.showLoading();
+        this.GestionService.eliminarPersona(persona.id)
+          .subscribe((resp) => {
+            Swal.fire(
+              'Eliminado!',
+              'Se ha eliminado el registro.',
+              'success'
+            )
+            this.actualizarListadoPersonas();
+          }, (err) => {
 
-    this.GestionService.eliminarPersona(persona.id)
-      .subscribe((resp) => {
-        this.actualizarListadoPersonas();
-        console.log(resp);
-
-      }, (err) => {
-
-      });
-
+          });
+      }
+    })
   }
 
 

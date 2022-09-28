@@ -15,10 +15,8 @@ export class LoginComponent implements OnInit {
   user: string = '';
   pass: string = '';
 
-
   ngOnInit(): void {
   }
-
 
   iniciarSession(): void {
     if (this.user == '' || this.pass == '') {
